@@ -49,8 +49,8 @@ const orderSchema = new mongoose.Schema({
         address:{type:String}
     },
     deliveryPersonLocation:{
-        latitude:{type:Number,required:true},
-        longitude:{type:Number,required:true},
+        latitude:{type:Number},
+        longitude:{type:Number},
         address:{type:String}
     },
     status:{
@@ -63,13 +63,13 @@ const orderSchema = new mongoose.Schema({
     updatedAt:{type:Date,default:Date.now},
 });
 
-async function getNextSequenecValue(sequenceName){
-    const sequenceDocumnent=await Counter.findByIdAndUpdate(
-        {name:sequenceName},
-        {$inc:{sequence_value:1}},
-        {new:true,upsert:true}
+async function getNextSequenecValue(sequenceName) {
+    const sequenceDocument = await Counter.findOneAndUpdate(
+        { name: sequenceName },
+        { $inc: { sequence_value: 1 } },
+        { new: true, upsert: true }
     );
-    return sequenceDocumnent.sequence_value;
+    return sequenceDocument.sequence_value;
 }
 
 
