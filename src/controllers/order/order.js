@@ -67,6 +67,8 @@ export const confirmOrder = async (req,reply)=>{
             longitude:deliveryPersonLocation?.longitude,
             address:deliveryPersonLocation.address || ""
         }
+
+        req.server.io.to(orderId).emit('orderConfirmed',order)
         await order.save()
         return reply.send(order)
     } catch (error) {
@@ -95,6 +97,8 @@ export const updateOrderStatus = async (req,reply)=>{
         order.status=status
         order.deliveryPersonLocation= deliveryPersonLocation
         await order.save()
+
+        req.server.io.to(orderId).emit('liveTrackingUpdates',order)
         return reply.send(order)
     } catch (error) {
         return reply.status(500).send({message:"Failed to update order",error})
@@ -112,7 +116,7 @@ export const getOrder = async (req,reply)=>{
             query.customer=customerId
         }
         if(deliveryPartnerId){
-            query.deliveryPartner=status
+            query.deliveryPartner=deliveryPartnerId
             query.branch=branchId
         }
 
