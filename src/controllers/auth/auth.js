@@ -17,6 +17,7 @@ const generateTokens=(user)=>{
 export const loginCustomer=async(req,reply)=>{
     try {
         const {phone}=req.body;
+        console.log("phoneeee",phone)
         let customer=await Customer.findOne({phone});
         if(!customer){
             customer=new Customer({
@@ -42,31 +43,40 @@ export const loginCustomer=async(req,reply)=>{
     }
 }
 
-export const loginDeliveryPartner=async(req,reply)=>{
+export const loginDeliveryPartner = async (req, reply) => {
     try {
-        const {email,password}=req.body;
-        let deliveryPartner=await DeliveryPartner.findOne({email});
-        if(!deliveryPartner){
-            return reply.status(404).send({message:"Not exists",error});
+        const { email, password } = req.body;
+        console.log("reqqqq", req.body);
+        
+        let deliveryPartner = await DeliveryPartner.findOne({ email });
+        if (!deliveryPartner) {
+            return reply.status(404).send({ 
+                message: "Delivery partner not found" 
+            });
         }
 
-        const isMtached=password==deliveryPartner.password
-
-        if(!isMtached){
-            return reply.status(400).send({message:"Inavlid Password",error});
+        const isMatched = password === deliveryPartner.password;
+        if (!isMatched) {
+            return reply.status(400).send({ 
+                message: "Invalid password" 
+            });
         }
 
-        const {accessToken,refreshToken}=generateTokens(deliveryPartner);
+        const { accessToken, refreshToken } = generateTokens(deliveryPartner);
 
         return reply.send({
-            message:"Login Sucesssfully",
+            message: "Login successful",
             accessToken,
             refreshToken,
             deliveryPartner
-        })
+        });
+
     } catch (error) {
-        return reply.status(500).send({message:"An error occured",error});
-        // console.log("error in login or signup",error)
+        console.log("Error in login:", error);
+        return reply.status(500).send({ 
+            message: "An error occurred during login",
+            error: error.message 
+        });
     }
 }
 

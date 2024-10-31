@@ -15,6 +15,6 @@ fastify.post('/order',createOrder)
 fastify.get('/order',getOrder)
 fastify.patch('/order/:orderId/status',updateOrderStatus)
 fastify.post('/order/:orderId/confirm',confirmOrder)
-fastify.post('/order/:orderId',getOrderById)
+fastify.get('/order/:orderId',getOrderById)
 
 }

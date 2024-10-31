@@ -49,6 +49,8 @@ export const confirmOrder = async (req,reply)=>{
         const {userId}=req.user;
         const {deliveryPersonLocation}=req.body;
 
+        console.log("ddddd",req.body,req.user,req.params)
+
         const deliveryPerson=await DeliveryPartner.findById(userId)
         if(!deliveryPerson){
             return reply.status(404).send({message:"Delivery Person not found"})
@@ -72,6 +74,7 @@ export const confirmOrder = async (req,reply)=>{
         await order.save()
         return reply.send(order)
     } catch (error) {
+        console.log("errrrr in confirming",error)
         return reply.status(500).send({message:"Failed to confirm order",error})
     }
 }
@@ -136,20 +139,23 @@ export const getOrder = async (req,reply)=>{
 export const getOrderById = async (req,reply)=>{
     try {
         const {orderId}=req.params;
+        console.log("orderrr",orderId)
         
 
-        const order = await Order.find(orderId).populate(
+        const order = await Order.findById(orderId).populate(
             "customer branch items.item deliveryPartner"
         );
 
         if(!order){
             return reply.status(404).send({message:"Order not found"})
         }
+        console.log("orderrr",order)
 
         return reply.send(order)
 
 
     } catch (error) {
+        console.log("errrrr",error)
         return reply.status(500).send({message:"Failed to retrive order",error})
     }
 }
