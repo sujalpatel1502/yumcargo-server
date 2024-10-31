@@ -10,7 +10,7 @@ export const createOrder = async(req,reply)=>{
         const customerData = await Customer.findById(userId);
         const branchData= await Branch.findById(branch);
 
-        console.log("dataaa",customerData,branchData)
+        // console.log("dataaa",customerData,branchData)
         if(!customerData){
             return reply.status(404).send({message:"Customer not found"})
         }
@@ -49,7 +49,7 @@ export const confirmOrder = async (req,reply)=>{
         const {userId}=req.user;
         const {deliveryPersonLocation}=req.body;
 
-        console.log("ddddd",req.body,req.user,req.params)
+        // console.log("ddddd",req.body,req.user,req.params)
 
         const deliveryPerson=await DeliveryPartner.findById(userId)
         if(!deliveryPerson){
@@ -102,6 +102,7 @@ export const updateOrderStatus = async (req,reply)=>{
         await order.save()
 
         req.server.io.to(orderId).emit('liveTrackingUpdates',order)
+        console.log("order updating----->>>live location",order)
         return reply.send(order)
     } catch (error) {
         return reply.status(500).send({message:"Failed to update order",error})
@@ -139,7 +140,7 @@ export const getOrder = async (req,reply)=>{
 export const getOrderById = async (req,reply)=>{
     try {
         const {orderId}=req.params;
-        console.log("orderrr",orderId)
+        // console.log("orderrr",orderId)
         
 
         const order = await Order.findById(orderId).populate(
@@ -149,7 +150,7 @@ export const getOrderById = async (req,reply)=>{
         if(!order){
             return reply.status(404).send({message:"Order not found"})
         }
-        console.log("orderrr",order)
+        // console.log("orderrr",order)
 
         return reply.send(order)
 

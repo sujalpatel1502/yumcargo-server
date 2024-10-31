@@ -17,7 +17,7 @@ const generateTokens=(user)=>{
 export const loginCustomer=async(req,reply)=>{
     try {
         const {phone}=req.body;
-        console.log("phoneeee",phone)
+        // console.log("phoneeee",phone)
         let customer=await Customer.findOne({phone});
         if(!customer){
             customer=new Customer({
@@ -46,7 +46,7 @@ export const loginCustomer=async(req,reply)=>{
 export const loginDeliveryPartner = async (req, reply) => {
     try {
         const { email, password } = req.body;
-        console.log("reqqqq", req.body);
+        // console.log("reqqqq", req.body);
         
         let deliveryPartner = await DeliveryPartner.findOne({ email });
         if (!deliveryPartner) {
