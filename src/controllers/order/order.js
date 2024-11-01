@@ -139,6 +139,7 @@ export const getOrder = async (req,reply)=>{
 
 export const getOrderById = async (req,reply)=>{
     try {
+        console.log("fetching live data from client ⚡️")
         const {orderId}=req.params;
         // console.log("orderrr",orderId)
         
